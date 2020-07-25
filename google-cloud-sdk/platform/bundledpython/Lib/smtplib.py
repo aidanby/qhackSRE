@@ -24,7 +24,7 @@ Example:
   For more info use "HELP <topic>".
   To report bugs in the implementation send email to
       sendmail-bugs@sendmail.org.
-  For local information send email to Postmaster at your site.
+  For local information send email to Postmain at your site.
   End of HELP info
   >>> s.putcmd("vrfy","someone@here")
   >>> s.getreply()

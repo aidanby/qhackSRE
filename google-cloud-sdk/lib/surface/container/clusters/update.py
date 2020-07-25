@@ -183,7 +183,7 @@ class Update(base.UpdateCommand):
     _AddMutuallyExclusiveArgs(group, base.ReleaseTrack.GA)
     flags.AddNodeLocationsFlag(group_locations)
     flags.AddClusterAutoscalingFlags(parser, group)
-    flags.AddMasterAuthorizedNetworksFlags(
+    flags.AddMainAuthorizedNetworksFlags(
         parser, enable_group_for_update=group)
     flags.AddEnableLegacyAuthorizationFlag(group)
     flags.AddStartIpRotationFlag(group)
@@ -246,32 +246,32 @@ class Update(base.UpdateCommand):
 
     if args.IsSpecified('username') or args.IsSpecified('enable_basic_auth'):
       flags.MungeBasicAuthFlags(args)
-      options = api_adapter.SetMasterAuthOptions(
-          action=api_adapter.SetMasterAuthOptions.SET_USERNAME,
+      options = api_adapter.SetMainAuthOptions(
+          action=api_adapter.SetMainAuthOptions.SET_USERNAME,
           username=args.username,
           password=args.password)
 
       try:
-        op_ref = adapter.SetMasterAuth(cluster_ref, options)
+        op_ref = adapter.SetMainAuth(cluster_ref, options)
       except apitools_exceptions.HttpError as error:
         raise exceptions.HttpException(error, util.HTTP_ERROR_FORMAT)
     elif (args.generate_password or args.set_password or
           args.IsSpecified('password')):
       if args.generate_password:
         password = ''
-        options = api_adapter.SetMasterAuthOptions(
-            action=api_adapter.SetMasterAuthOptions.GENERATE_PASSWORD,
+        options = api_adapter.SetMainAuthOptions(
+            action=api_adapter.SetMainAuthOptions.GENERATE_PASSWORD,
             password=password)
       else:
         password = args.password
         if not args.IsSpecified('password'):
           password = input('Please enter the new password:')
-        options = api_adapter.SetMasterAuthOptions(
-            action=api_adapter.SetMasterAuthOptions.SET_PASSWORD,
+        options = api_adapter.SetMainAuthOptions(
+            action=api_adapter.SetMainAuthOptions.SET_PASSWORD,
             password=password)
 
       try:
-        op_ref = adapter.SetMasterAuth(cluster_ref, options)
+        op_ref = adapter.SetMainAuth(cluster_ref, options)
         del password
         del options
       except apitools_exceptions.HttpError as error:
@@ -295,7 +295,7 @@ class Update(base.UpdateCommand):
     elif args.start_ip_rotation or args.start_credential_rotation:
       if args.start_ip_rotation:
         msg_tmpl = """This will start an IP Rotation on cluster [{name}]. The \
-master will be updated to serve on a new IP address in addition to the current \
+main will be updated to serve on a new IP address in addition to the current \
 IP address. Kubernetes Engine will then recreate all nodes ({num_nodes} nodes) \
 to point to the new IP address. This operation is long-running and will block \
 other operations on the cluster (including delete) until it has run to \
@@ -303,7 +303,7 @@ completion."""
         rotate_credentials = False
       elif args.start_credential_rotation:
         msg_tmpl = """This will start an IP and Credentials Rotation on cluster\
- [{name}]. The master will be updated to serve on a new IP address in addition \
+ [{name}]. The main will be updated to serve on a new IP address in addition \
 to the current IP address, and cluster credentials will be rotated. Kubernetes \
 Engine will then recreate all nodes ({num_nodes} nodes) to point to the new IP \
 address. This operation is long-running and will block other operations on the \
@@ -322,7 +322,7 @@ cluster (including delete) until it has run to completion."""
     elif args.complete_ip_rotation or args.complete_credential_rotation:
       if args.complete_ip_rotation:
         msg_tmpl = """This will complete the in-progress IP Rotation on \
-cluster [{name}]. The master will be updated to stop serving on the old IP \
+cluster [{name}]. The main will be updated to stop serving on the old IP \
 address and only serve on the new IP address. Make sure all API clients have \
 been updated to communicate with the new IP address (e.g. by running `gcloud \
 container clusters get-credentials --project {project} --zone {zone} {name}`). \
@@ -330,7 +330,7 @@ This operation is long-running and will block other operations on the cluster \
 (including delete) until it has run to completion."""
       elif args.complete_credential_rotation:
         msg_tmpl = """This will complete the in-progress Credential Rotation on\
- cluster [{name}]. The master will be updated to stop serving on the old IP \
+ cluster [{name}]. The main will be updated to stop serving on the old IP \
 address and only serve on the new IP address. Old cluster credentials will be \
 invalidated. Make sure all API clients have been updated to communicate with \
 the new IP address (e.g. by running `gcloud container clusters get-credentials \
@@ -413,7 +413,7 @@ class UpdateBeta(Update):
         group_logging_monitoring, enable_kubernetes=True)
     flags.AddMonitoringServiceFlag(
         group_logging_monitoring, enable_kubernetes=True)
-    flags.AddMasterAuthorizedNetworksFlags(
+    flags.AddMainAuthorizedNetworksFlags(
         parser, enable_group_for_update=group)
     flags.AddEnableLegacyAuthorizationFlag(group)
     flags.AddStartIpRotationFlag(group)
@@ -472,7 +472,7 @@ class UpdateAlpha(Update):
         group_logging_monitoring, enable_kubernetes=True)
     flags.AddMonitoringServiceFlag(
         group_logging_monitoring, enable_kubernetes=True)
-    flags.AddMasterAuthorizedNetworksFlags(
+    flags.AddMainAuthorizedNetworksFlags(
         parser, enable_group_for_update=group)
     flags.AddEnableLegacyAuthorizationFlag(group)
     flags.AddStartIpRotationFlag(group)

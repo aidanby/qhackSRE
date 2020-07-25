@@ -1523,8 +1523,8 @@ class ImportVariantsRequest(_messages.Message):
         this reason, uncompressed VCF is currently recommended for imports
         with more than 1GB combined uncompressed size, or for time sensitive
         imports.
-      FORMAT_COMPLETE_GENOMICS: Complete Genomics masterVarBeta format. The
-        masterVarBeta files may be bzip2 compressed.
+      FORMAT_COMPLETE_GENOMICS: Complete Genomics mainVarBeta format. The
+        mainVarBeta files may be bzip2 compressed.
     """
     FORMAT_UNSPECIFIED = 0
     FORMAT_VCF = 1

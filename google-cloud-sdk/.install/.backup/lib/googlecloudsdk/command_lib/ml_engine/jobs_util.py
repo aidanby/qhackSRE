@@ -89,8 +89,8 @@ CUSTOM tier is not a set tier, but rather enables you to use your own
 cluster specification. When you use this tier, set values to configure your
 processing cluster according to these guidelines (using the `--config` flag):
 
-* You _must_ set `TrainingInput.masterType` to specify the type of machine to
-  use for your master node. This is the only required setting.
+* You _must_ set `TrainingInput.mainType` to specify the type of machine to
+  use for your main node. This is the only required setting.
 * You _may_ set `TrainingInput.workerCount` to specify the number of workers to
   use. If you specify one or more workers, you _must_ also set
   `TrainingInput.workerType` to specify the type of machine to use for your
@@ -100,8 +100,8 @@ processing cluster according to these guidelines (using the `--config` flag):
   _must_ also set `TrainingInput.parameterServerType` to specify the type of
   machine to use for your parameter servers.  Note that all of your workers must
   use the same machine type, which can be different from your parameter server
-  type and master type. Your parameter servers must likewise use the same
-  machine type, which can be different from your worker type and master type.\
+  type and main type. Your parameter servers must likewise use the same
+  machine type, which can be different from your worker type and main type.\
 """)
 }
 

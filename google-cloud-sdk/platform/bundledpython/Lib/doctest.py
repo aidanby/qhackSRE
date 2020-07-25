@@ -1518,7 +1518,7 @@ class DocTestRunner:
         return TestResults(totalf, totalt)
 
     #/////////////////////////////////////////////////////////////////
-    # Backward compatibility cruft to maintain doctest.master.
+    # Backward compatibility cruft to maintain doctest.main.
     #/////////////////////////////////////////////////////////////////
     def merge(self, other):
         d = self._name2ft
@@ -1814,7 +1814,7 @@ class DebugRunner(DocTestRunner):
 
 # For backward compatibility, a global instance of a DocTestRunner
 # class, updated by testmod.
-master = None
+main = None
 
 def testmod(m=None, name=None, globs=None, verbose=None,
             report=True, optionflags=0, extraglobs=None,
@@ -1876,13 +1876,13 @@ def testmod(m=None, name=None, globs=None, verbose=None,
 
     Advanced tomfoolery:  testmod runs methods of a local instance of
     class doctest.Tester, then merges the results into (or creates)
-    global Tester instance doctest.master.  Methods of doctest.master
+    global Tester instance doctest.main.  Methods of doctest.main
     can be called directly too, if you want to do something unusual.
     Passing report=0 to testmod is especially useful then, to delay
-    displaying a summary.  Invoke doctest.master.summarize(verbose)
+    displaying a summary.  Invoke doctest.main.summarize(verbose)
     when you're done fiddling.
     """
-    global master
+    global main
 
     # If no module was given, then use __main__.
     if m is None:
@@ -1913,10 +1913,10 @@ def testmod(m=None, name=None, globs=None, verbose=None,
     if report:
         runner.summarize()
 
-    if master is None:
-        master = runner
+    if main is None:
+        main = runner
     else:
-        master.merge(runner)
+        main.merge(runner)
 
     return TestResults(runner.failures, runner.tries)
 
@@ -1994,13 +1994,13 @@ def testfile(filename, module_relative=True, name=None, package=None,
 
     Advanced tomfoolery:  testmod runs methods of a local instance of
     class doctest.Tester, then merges the results into (or creates)
-    global Tester instance doctest.master.  Methods of doctest.master
+    global Tester instance doctest.main.  Methods of doctest.main
     can be called directly too, if you want to do something unusual.
     Passing report=0 to testmod is especially useful then, to delay
-    displaying a summary.  Invoke doctest.master.summarize(verbose)
+    displaying a summary.  Invoke doctest.main.summarize(verbose)
     when you're done fiddling.
     """
-    global master
+    global main
 
     if package and not module_relative:
         raise ValueError("Package may only be specified for module-"
@@ -2038,10 +2038,10 @@ def testfile(filename, module_relative=True, name=None, package=None,
     if report:
         runner.summarize()
 
-    if master is None:
-        master = runner
+    if main is None:
+        main = runner
     else:
-        master.merge(runner)
+        main.merge(runner)
 
     return TestResults(runner.failures, runner.tries)
 

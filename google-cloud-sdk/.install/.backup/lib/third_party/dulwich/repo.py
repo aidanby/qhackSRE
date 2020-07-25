@@ -790,8 +790,8 @@ class Repo(BaseRepo):
             b'refs/tags', self.refs.as_dict(b'refs/tags'))
         try:
             target.refs.add_if_new(
-                b'refs/heads/master',
-                self.refs[b'refs/heads/master'])
+                b'refs/heads/main',
+                self.refs[b'refs/heads/main'])
         except KeyError:
             pass
 
@@ -876,7 +876,7 @@ class Repo(BaseRepo):
             os.mkdir(os.path.join(path, *d))
         DiskObjectStore.init(os.path.join(path, OBJECTDIR))
         ret = cls(path)
-        ret.refs.set_symbolic_ref(b'HEAD', b"refs/heads/master")
+        ret.refs.set_symbolic_ref(b'HEAD', b"refs/heads/main")
         ret._init_files(bare)
         return ret
 

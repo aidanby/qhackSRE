@@ -155,14 +155,14 @@ class ClusterConfig(_messages.Message):
     gceClusterConfig: Required. The shared Compute Engine config settings for
       all instances in a cluster.
     initializationActions: Optional. Commands to execute on each node after
-      config is completed. By default, executables are run on master and all
+      config is completed. By default, executables are run on main and all
       worker nodes. You can test a node's role metadata to run an executable
-      on a master or worker node, as shown below using curl (you can also use
+      on a main or worker node, as shown below using curl (you can also use
       wget): ROLE=$(curl -H Metadata-Flavor:Google
       http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if
-      [[ "${ROLE}" == 'Master' ]]; then   ... master specific actions ... else
+      [[ "${ROLE}" == 'Main' ]]; then   ... main specific actions ... else
       ... worker specific actions ... fi
-    masterConfig: Optional. The Compute Engine config settings for the master
+    mainConfig: Optional. The Compute Engine config settings for the main
       instance in a cluster.
     secondaryWorkerConfig: Optional. The Compute Engine config settings for
       additional worker instances in a cluster.
@@ -176,7 +176,7 @@ class ClusterConfig(_messages.Message):
   encryptionConfig = _messages.MessageField('EncryptionConfig', 2)
   gceClusterConfig = _messages.MessageField('GceClusterConfig', 3)
   initializationActions = _messages.MessageField('NodeInitializationAction', 4, repeated=True)
-  masterConfig = _messages.MessageField('InstanceGroupConfig', 5)
+  mainConfig = _messages.MessageField('InstanceGroupConfig', 5)
   secondaryWorkerConfig = _messages.MessageField('InstanceGroupConfig', 6)
   softwareConfig = _messages.MessageField('SoftwareConfig', 7)
   workerConfig = _messages.MessageField('InstanceGroupConfig', 8)
@@ -1615,7 +1615,7 @@ class HiveJob(_messages.Message):
 
 class InstanceGroupConfig(_messages.Message):
   r"""Optional. The config settings for Compute Engine resources in an
-  instance group, such as a master or worker group.
+  instance group, such as a main or worker group.
 
   Fields:
     accelerators: Optional. The Compute Engine accelerator configuration for
@@ -1642,7 +1642,7 @@ class InstanceGroupConfig(_messages.Message):
       Group Manager that manages this group. This is only used for preemptible
       instance groups.
     numInstances: Optional. The number of VM instances in the instance group.
-      For master instance groups, must be set to 1.
+      For main instance groups, must be set to 1.
   """
 
   accelerators = _messages.MessageField('AcceleratorConfig', 1, repeated=True)
@@ -3274,7 +3274,7 @@ class YarnApplication(_messages.Message):
     progress: Required. The numerical progress of the application, from 1 to
       100.
     state: Required. The application state.
-    trackingUrl: Optional. The HTTP URL of the ApplicationMaster,
+    trackingUrl: Optional. The HTTP URL of the ApplicationMain,
       HistoryServer, or TimelineServer that provides application-specific
       information. The URL uses the internal hostname, and requires a proxy
       server for resolution and, possibly, access.

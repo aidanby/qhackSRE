@@ -347,17 +347,17 @@ class GNUTranslations(NullTranslations):
         # Are we big endian or little endian?
         magic = unpack('<I', buf[:4])[0]
         if magic == self.LE_MAGIC:
-            version, msgcount, masteridx, transidx = unpack('<4I', buf[4:20])
+            version, msgcount, mainidx, transidx = unpack('<4I', buf[4:20])
             ii = '<II'
         elif magic == self.BE_MAGIC:
-            version, msgcount, masteridx, transidx = unpack('>4I', buf[4:20])
+            version, msgcount, mainidx, transidx = unpack('>4I', buf[4:20])
             ii = '>II'
         else:
             raise IOError(0, 'Bad magic number', filename)
         # Now put all messages from the .mo file buffer into the catalog
         # dictionary.
         for i in xrange(0, msgcount):
-            mlen, moff = unpack(ii, buf[masteridx:masteridx+8])
+            mlen, moff = unpack(ii, buf[mainidx:mainidx+8])
             mend = moff + mlen
             tlen, toff = unpack(ii, buf[transidx:transidx+8])
             tend = toff + tlen
@@ -413,7 +413,7 @@ class GNUTranslations(NullTranslations):
                     tmsg = unicode(tmsg, self._charset)
                 catalog[msg] = tmsg
             # advance to next entry in the seek tables
-            masteridx += 8
+            mainidx += 8
             transidx += 8
 
     def gettext(self, message):

@@ -1925,9 +1925,9 @@ class Connection(object):
         _lib.SSL_get_client_random(self._ssl, outp, length)
         return _ffi.buffer(outp, length)[:]
 
-    def master_key(self):
+    def main_key(self):
         """
-        Get a copy of the master key.
+        Get a copy of the main key.
 
         :return: A string representing the state
         """
@@ -1935,10 +1935,10 @@ class Connection(object):
         if session == _ffi.NULL:
             return None
 
-        length = _lib.SSL_SESSION_get_master_key(session, _ffi.NULL, 0)
+        length = _lib.SSL_SESSION_get_main_key(session, _ffi.NULL, 0)
         assert length > 0
         outp = _no_zero_allocator("unsigned char[]", length)
-        _lib.SSL_SESSION_get_master_key(session, outp, length)
+        _lib.SSL_SESSION_get_main_key(session, outp, length)
         return _ffi.buffer(outp, length)[:]
 
     def sock_shutdown(self, *args, **kwargs):
